@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - BHASHINI_URL=${BHASHINI_URL:-https://dhruva-api.bhashini.gov.in/services/inference/pipeline}
+      - BHASHINI_KEY=${BHASHINI_KEY}
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2:3b}
+      - SESSION_TIMEOUT_MINUTES=${SESSION_TIMEOUT_MINUTES:-30}
+      - FORM_URL=${FORM_URL:-https://scholarships.gov.in/scholarshipEligibility/}
+    depends_on:
+      - ollama
+    volumes:
+      - ./screenshots:/app/screenshots
+    restart: unless-stopped
+    networks:
+      - scholarship-net
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - scholarship-net
+    # Pull the model on startup
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        ollama serve &
+        sleep 10
+        ollama pull llama3.2:3b
+        wait
+
+networks:
+  scholarship-net:
+    driver: bridge
+
+volumes:
+  ollama_data:

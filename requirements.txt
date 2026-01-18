@@ -1,0 +1,26 @@
+# FastAPI and server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+
+# Validation
+pydantic>=2.6.0
+pydantic-settings>=2.1.0
+
+# HTTP client
+httpx>=0.26.0
+requests>=2.31.0
+
+# Audio processing
+soundfile>=0.12.1
+numpy>=1.26.0
+
+# Browser automation
+selenium>=4.17.0
+webdriver-manager>=4.0.1
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Production server (Unix only, optional on Windows)
+# gunicorn>=21.2.0
